@@ -15,6 +15,9 @@ imagesRouter.post(
   isAuthenticated,
   upload.single("file"),
   async function (req, res, next) {
+    if (!req.body.title || !req.file){
+        return res.status(400).json({ errors: "Missing parameters" });
+      }
     const title = req.body.title;
     const name = req.session.user.username;
     const file = req.file;
@@ -29,6 +32,9 @@ imagesRouter.post(
 );
 
 imagesRouter.get("", isAuthenticated, async function (req, res, next) {
+  if (!req.query.incr || !req.query.image || !req.query.user){
+    return res.status(400).json({ errors: "Missing parameters" });
+  }
   const increment = parseInt(req.query.incr);
   const newId = parseInt(req.query.image) + increment;
   const userId = parseInt(req.query.user);
@@ -66,6 +72,9 @@ imagesRouter.get("", isAuthenticated, async function (req, res, next) {
 });
 
 imagesRouter.get("/gallery", isAuthenticated, async function (req, res, next) {
+  if (!req.query.incr || !req.query.user){
+    return res.status(400).json({ errors: "Missing parameters" });
+    }
   const increment = parseInt(req.query.incr);
   const newId = parseInt(req.query.user) + increment;
   let operator = Op.eq;
@@ -95,6 +104,9 @@ imagesRouter.get("/gallery", isAuthenticated, async function (req, res, next) {
 });
 
 imagesRouter.delete("/:id/", isAuthenticated, async function (req, res, next) {
+    if (!req.params.id){
+        return res.status(400).json({ errors: "Missing parameters" });
+      }
   const imageDelete = await Image.findOne({
     where: {
       id: {
@@ -121,6 +133,9 @@ imagesRouter.delete("/:id/", isAuthenticated, async function (req, res, next) {
 });
 
 imagesRouter.get("/src/:id", isAuthenticated, async function (req, res, next) {
+    if (!req.params.id){
+        return res.status(400).json({ errors: "Missing parameters" });
+      }
   let image = req.params.id;
   let images = await Image.findOne({
     where: {

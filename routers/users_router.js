@@ -7,9 +7,9 @@ import { isAuthenticated } from "../middleware/auth.js";
 export const usersRouter = Router();
 
 usersRouter.post("/signup", async function (req, res, next) {
-    if (!req.body.username || !req.body.password){
-        return res.status(400).json({ errors: "Missing parameters" });
-      }
+  if (!req.body.username || !req.body.password) {
+    return res.status(400).json({ errors: "Missing parameters" });
+  }
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
   const password = bcrypt.hashSync(req.body.password, salt);
@@ -32,9 +32,9 @@ usersRouter.post("/signup", async function (req, res, next) {
 });
 
 usersRouter.post("/login", async function (req, res, next) {
-    if (!req.body.username || !req.body.password){
-        return res.status(400).json({ errors: "Missing parameters" });
-      }
+  if (!req.body.username || !req.body.password) {
+    return res.status(400).json({ errors: "Missing parameters" });
+  }
   const password = req.body.password;
   const username = req.body.username;
   let user;

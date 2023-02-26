@@ -1,0 +1,577 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-weight: 300;
+}
+
+html {
+  font-family: "national", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", "Arial", sans-serif;
+
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #333;
+}
+
+/* header styling */
+header {
+  border-bottom: 1px solid bisque;
+  display: flex;
+  background-color: #333;
+  color: bisque;
+  padding: 1em;
+  text-align: center;
+}
+
+header h1 {
+  margin: auto;
+  font-style: italic;
+}
+
+header h1 a {
+  text-decoration: none;
+  color: unset;
+}
+
+/* main section styling */
+main {
+  height: 45em;
+  display: flex;
+  flex-wrap: wrap;
+}
+section {
+  flex: 1;
+}
+section#featured {
+  height: auto;
+  min-width: 100%;
+  margin-bottom: 3em;
+}
+
+#current-image[src=""] {
+  background-image: url("../media/no-photo.png");
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 32em;
+  margin-top: 4em;
+}
+
+.hidden,
+#image-interactions.hidden,
+#image-details.hidden,
+#no-comments.hidden {
+  display: none;
+}
+
+#delete-image.hidden {
+  visibility: hidden;
+}
+
+#no-comments {
+  display: flex;
+  justify-content: center;
+}
+
+#error,
+#login-error,
+#signup-error {
+  font-size: 0.8rem;
+  color: #ff4d4d;
+  margin-bottom: 0.5rem;
+}
+
+#picture {
+  padding: 0em 1em 1em 1em;
+}
+
+#pic-wrapper {
+  display: flex;
+  margin: auto;
+  height: 100%;
+  min-width: 6em;
+  min-height: 12em;
+}
+
+.image {
+  width: auto;
+  height: 100%;
+  margin: auto;
+  margin-bottom: 3em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+.image img {
+  display: flex;
+  max-height: 45em;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+  justify-content: center;
+  margin: auto;
+}
+.image:hover img {
+  transform: scale(1.1);
+}
+#image-details {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 2em;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 0.5em 0 1em 0;
+  transform: translateY(200%);
+  transition: transform 0.5s ease-in-out;
+  z-index: 2;
+}
+.image:hover #image-details {
+  transform: translateY(0%);
+}
+
+/* like, delete, pagination, and comments UI styling */
+#image-interactions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #222;
+  color: bisque;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em;
+  transform: translateY(100%);
+  transition: transform 0.5s ease-in-out;
+  z-index: 2;
+}
+
+#image-title,
+#image-author {
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+}
+
+#image-author {
+  font-weight: 600;
+}
+
+.image:hover #image-interactions,
+.image:hover #prev-image,
+.image:hover #next-image {
+  transform: translateY(0%);
+}
+
+.delete,
+#comments-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.delete i,
+#comments-button i {
+  margin: 0 0.5em 0 0.5em;
+}
+#prev-image {
+  left: 0;
+  transform: translateX(-4em);
+}
+#next-image {
+  right: 0;
+  transform: translateX(4em);
+}
+.image-pagination {
+  background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  cursor: pointer;
+  transition: transform 0.5s ease-in-out;
+  height: 100%;
+  width: 3em;
+  top: 0;
+  z-index: 1;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.image-pagination i {
+  position: absolute;
+  top: 50%;
+}
+
+/* Form Container */
+#popup-form-container,
+#login-form-container,
+#signup-form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+#login-form-container,
+#signup-form-container {
+  background-color: rgba(0, 0, 0);
+}
+
+/* Show the form */
+#popup-form-container.show,
+#login-form-container.show,
+#signup-form-container.show,
+#comments-section.show {
+  visibility: visible;
+  opacity: 1;
+  height: 100%;
+}
+/* Form */
+form {
+  background-color: #333;
+  color: bisque;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  z-index: 3;
+}
+
+/* Form Inputs */
+input[type="text"],
+input[type="url"],
+input[type="password"],
+textarea {
+  background-color: bisque;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid;
+  border-radius: 4px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+/* Form Label */
+label {
+  font-size: 18px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Submit Button */
+input[type="submit"],
+input[type="button"] {
+  width: 100%;
+  background-color: bisque;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+input[type="submit"]:hover {
+  background-color: #ebd0b0;
+}
+
+/* Overlay */
+#popup-form-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Close button */
+#popup-form-container i.close-form,
+#login-form-container i.close-form,
+#signup-form-container i.close-form {
+  float: right;
+  cursor: pointer;
+  font-size: 1.5em;
+}
+
+/* Credits */
+#credits {
+  color: bisque;
+  margin: 3em;
+}
+
+#credits ul {
+  list-style: none;
+}
+
+#credits a {
+  color: unset;
+}
+
+#credits a:hover {
+  color: #ebd0b0;
+}
+
+/* Header styling */
+#open-form,
+#open-login,
+#open-credits {
+  font-size: 2em;
+  cursor: pointer;
+}
+
+#open-form {
+  right: 1em;
+}
+
+#open-form:hover,
+#open-login:hover,
+#open-credits:hover {
+  color: grey;
+  transition: color 0.2s ease-in-out;
+}
+
+#open-login {
+  right: 8em;
+}
+
+a#open-credits {
+  left: 1em;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Comment section styling */
+#comments-section {
+  width: 60%;
+  margin: auto;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+#comments-section .delete {
+  color: #fff;
+  background-color: #ff3f3f;
+  transform: translateX(100%);
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 5.5em;
+  padding-right: 1em;
+  transition: all 0.5s ease-in-out;
+}
+
+#comments-section h2 {
+  background-color: #333;
+  color: bisque;
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+#comments-section.show {
+  padding: 0 20px 3em 20px;
+  z-index: 2;
+}
+
+.comment {
+  background-color: bisque;
+  position: relative;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.comment-hover:hover .comment-wrapper {
+  width: calc(100% - 5.5em);
+}
+
+#comments-section .comment:hover .delete {
+  transform: translateX(0);
+}
+
+.comment-wrapper {
+  width: 100%;
+  transition: width 0.5s ease-in-out;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.comment-author {
+  font-weight: bold;
+  width: 75%;
+}
+
+.comment-text {
+  font-size: 1em;
+}
+
+#comment-form {
+  background-color: bisque;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 5em;
+}
+
+#comment-form textarea,
+#comment-form input[type="text"] {
+  padding: 10px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background-color: bisque;
+}
+
+#comment-form button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #222;
+  color: bisque;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+#comments-section h2 button {
+  border: none;
+  border-radius: 100%;
+  padding: 1em;
+  color: #333;
+  background-color: bisque;
+}
+
+.gallery-pagination {
+  display: flex;
+  width: 100%;
+  height: 1.5em;
+}
+
+.gallery-pagination button,
+#username {
+  color: bisque;
+  background-color: #222;
+  border: 1px solid bisque;
+  border-radius: 0;
+  border-width: 0 0 1px 0;
+  width: calc(100% / 3);
+}
+#username {
+  display: flex;
+  justify-content: center;
+  font-size: 0.9em;
+}
+
+/* footer styling */
+footer {
+  z-index: 4;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: #222;
+  color: bisque;
+  text-align: center;
+  padding: 1em;
+}
+
+/* Style the button that triggers the modal */
+.signup-btn {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 10% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+input[type="submit"] {
+  margin-top: 1em;
+}
+
+/* media queries for mobile view */
+@media only screen and (max-width: 769px) {
+  #comments-section {
+    width: 90%;
+  }
+
+  .image #image-interactions,
+  .image #prev-image,
+  .image #next-image,
+  #image-details,
+  #comments .delete {
+    transform: translateY(0%);
+  }
+
+  .comment-wrapper {
+    width: calc(100% - 5.5em);
+  }
+}

@@ -70,7 +70,9 @@ section#featured {
   display: none;
 }
 
-#delete-image.hidden, #prev-comments.hidden, #next-comments.hidden {
+#delete-image.hidden,
+#prev-comments.hidden,
+#next-comments.hidden {
   display: unset;
   visibility: hidden;
 }

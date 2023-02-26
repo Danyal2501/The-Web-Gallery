@@ -71,11 +71,9 @@ commentsRouter.delete(
       },
     });
     if (!commentDelete) {
-      return res
-        .status(403)
-        .json({
-          errors: "User does not own this comment, or its parent image",
-        });
+      return res.status(403).json({
+        errors: "User does not own this comment, or its parent image",
+      });
     }
     return res.json(commentDelete);
   }

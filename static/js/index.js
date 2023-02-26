@@ -257,11 +257,15 @@ window.onload = (async function () {
       noComments.classList.add("hidden");
       nextComments.disabled = false;
       prevComments.disabled = false;
+      nextComments.classList.remove("hidden");
+      prevComments.classList.remove("hidden");
       if (index + 10 >= comments.length) {
         nextComments.disabled = true;
+        nextComments.classList.add("hidden");
       }
       if (index === 0) {
         prevComments.disabled = true;
+        prevComments.classList.add("hidden");
       }
       commentIndex = index;
 
